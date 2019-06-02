@@ -6,6 +6,8 @@ A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to b
 
 #### install
 
+Follow the traditional way of you plugin manager.
+
 add this in `.vimrc`
 ```
 Plug 'doums/coBra'
@@ -19,6 +21,7 @@ then run in vim
 #### settings
 
 Default pairs ```"'`{([```
+
 All settings are optional.
 
 To customize the pairs use `g:coBraPairs`, if open character = close character the pair is considered as quotes (different behavior on some situation compared to real brackets)
