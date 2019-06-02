@@ -50,6 +50,7 @@ let g:coBraLineMax = 20
 
 * smart auto close
 * smart auto delete
+* smart auto skip close
 * mutli line support
 
 #### license
