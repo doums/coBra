@@ -1,6 +1,6 @@
 ## coBra
 
-###### :snake: for [c]oerced [b]racket :snake:
+###### :snake: for [co]erced [bra]cket :snake:
 
 A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to be smart.
 
