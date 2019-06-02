@@ -6,7 +6,7 @@ A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to b
 
 #### install
 
-Follow the traditional way of you plugin manager.
+Follow the traditional way of your plugin manager.
 
 add this in `.vimrc`
 ```
