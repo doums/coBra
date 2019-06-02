@@ -18,7 +18,7 @@ then run in vim
 
 #### settings
 
-Default pairs `"'`{([`.
+Default pairs ```"'`{([```
 All settings are optional.
 
 To customize the pairs use `g:coBraPairs`, if open character = close character the pair is considered as quotes (different behavior on some situation compared to real brackets)
@@ -33,7 +33,7 @@ let g:coBraPairs = [
   \]
 ```
 
-Preformance is king when we type. For that reason you can set `g:coBraMaxPendingCloseTry` to a scpecific value between 0 and any positive value, default 10, max `maxfuncdepth`. When you type an openning bracket, before inserting and auto closing it the script looks for a "pending" close bracket that does not have a matching open one. If it find one the script simply inserts the open bracket without auto closing it to complete the pair. `g:coBraMaxPendingCloseTry` limits the number of try of this logic.
+Preformance is king when we type. For that reason you can set `g:coBraMaxPendingCloseTry` to a scpecific value between 0 and `maxfuncdepth`, default 10. When you type an openning bracket, before inserting and auto closing it the script looks for a "pending" close bracket that does not have a matching open one. If it find one the script simply inserts the open bracket without auto closing it to complete the pair. `g:coBraMaxPendingCloseTry` limits the number of try of this logic.
 ```
 let g:coBraMaxPendingCloseTry = 10
 ```
