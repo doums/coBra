@@ -87,9 +87,26 @@ function s:IsPendingClose(open, close)
   let currentLine = line(".")
   let currentCol = col(".")
   let s:recursiveCount = 0
+  if s:UnderCursorSearch(a:open, a:close, s:GetLineBoundary('b'))
+    return v:true
+  endif
   let result = s:RecursiveSearch(a:open, a:close, s:GetLineBoundary('f'), s:GetLineBoundary('b'))
   call cursor(currentLine, currentCol)
   return result
+endfunction
+
+function s:UnderCursorSearch(open, close, stopLine)
+  if getline(".")[col(".") - 1] == a:close
+    let [line, col] = searchpairpos(escape(a:open, '['),
+          \ '',
+          \ escape(a:close, ']'),
+          \ 'bWn',
+          \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+          \ a:stopLine)
+    if line == 0 && col == 0
+      return v:true
+    endif
+  endif
 endfunction
 
 function s:RecursiveSearch(open, close, maxForward, maxBackward)
