@@ -15,6 +15,7 @@ Plug 'doums/coBra'
 
 then run in vim
 ```
+:source $MYVIMRC
 :PlugInstall
 ```
 
