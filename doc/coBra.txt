@@ -1,0 +1,45 @@
+*coBra.txt*   Plugin that forces brackets and quotes to be smart
+
+[co]erced [bra]cket, forces brackets and quotes to be smart
+
+
+coBra run in insert mode only, default pairs are "'`{([
+coBra will map for insert mode only <BS>, <CR> and each opener character
+from the pairs. He expects that no mapping for these keys already exists.
+If not the concerned mapping will fail.
+
+All settings are optional.
+
+==============================================================================
+                                                                *g:coBraPairs*
+
+You can customize the pairs. If the open character is the same as the close
+character the pair is considered as quotes (different behavior on some
+situation compared to real brackets).
+One restriction, a pair is comosed of two characters max.
+>
+  let g:coBraPairs = [
+    \ ['"', '"'],
+    \ ["'", "'"],
+    \ ['`', '`'],
+    \ ['{', '}'],
+    \ ['(', ')'],
+    \ ['[', ']']
+    \ ]
+<
+
+                                                   *g:coBraMaxPendingCloseTry*
+
+Preformance is king when we type. For that reason you can set
+`g:coBraMaxPendingCloseTry` to a scpecific value between 0 and
+`maxfuncdepth`, default 10. When you type an openning bracket, before
+inserting and auto closing it the script looks recursively for a "pending"
+close bracket that does not have a matching open one. If it find one the
+script simply inserts the open bracket without auto closing it to complete the
+pair. `g:coBraMaxPendingCloseTry` limits the number of try of this logic.
+
+                                                              *g:coBraLineMax*
+
+You can set the range of lines on which the script is effective to preform
+its logic (starting from the cursor position). Default is all the lines
+displayed in the current window.
