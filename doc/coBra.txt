@@ -1,6 +1,6 @@
 *coBra.txt*   Plugin that forces brackets and quotes to be smart
 
-[co]erced [bra]cket, forces brackets and quotes to be smart
+[co]erced [bra]cket
 
 
 coBra run in insert mode only, default pairs are "'`{([
