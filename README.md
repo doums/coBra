@@ -23,7 +23,7 @@ then run in vim
 
 coBra run in insert mode only, default pairs are ```"'`{([```
 
-coBra will bind for insert mode only `<BS>`, `<CR>` and each opener character from the pairs. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
+coBra will map for insert mode only `<BS>`, `<CR>` and each opener character from the pairs. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
 
 All settings are optional.
 
