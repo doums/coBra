@@ -21,7 +21,9 @@ then run in vim
 
 #### settings
 
-coBra run in insert mode, default pairs are ```"'`{([```
+coBra run in insert mode only, default pairs are ```"'`{([```
+
+coBra will bind for insert mode only `<BS>`, `<CR>` and each opener character from the pairs. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
 
 All settings are optional.
 
