@@ -15,15 +15,20 @@ if exists("g:coBra")
 endif
 let g:coBra = 1
 
-if !exists("g:coBraPairs")
-  let g:coBraPairs = [
-        \  ['"', '"'],
-        \  ["'", "'"],
-        \  ['`', '`'],
-        \  ['{', '}'],
-        \  ['(', ')'],
-        \  ['[', ']']
-        \]
+let g:defaultPairs = [
+      \  ['"', '"'],
+      \  ["'", "'"],
+      \  ['`', '`'],
+      \  ['{', '}'],
+      \  ['(', ')'],
+      \  ['[', ']']
+      \ ]
+let b:pairs = g:defaultPairs
+
+if !exists('g:coBraPairs')
+  let g:coBraPairs = { 'default': g:defaultPairs }
+elseif !has_key(g:coBraPairs, 'default')
+  let g:coBraPairs.default = g:defaultPairs
 endif
 
 if !exists("g:coBraMaxPendingCloseTry")
@@ -32,17 +37,35 @@ endif
 
 let s:recursiveCount = 0
 
-for [open, close] in g:coBraPairs
-  if open != close
-    execute 'inoremap <unique><expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
-    execute 'inoremap <unique><expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
-  else
-    execute 'inoremap <unique><expr><silent> ' . open . ' <SID>ManageQuote("' . escape(open, '"') . '")'
-  endif
-endfor
+augroup coBra
+  autocmd!
+  autocmd FileType * call s:Init()
+augroup END
 
-inoremap <unique><expr> <BS> <SID>AutoDelete()
-inoremap <unique><expr> <CR> <SID>AutoBreak()
+function s:Init()
+  for type in keys(g:coBraPairs)
+    if type == &filetype
+      return s:setPairsAndMap(type)
+    endif
+  endfor
+  return s:setPairsAndMap('default')
+endfunction
+
+function s:setPairsAndMap(type)
+  let b:pairs = g:coBraPairs[a:type]
+  for [open, close] in b:pairs
+    if open != close
+      execute 'inoremap <buffer><expr><silent> '.open.
+            \' <SID>AutoClose("'.escape(open, '"').'", "'.escape(close, '"').'")'
+      execute 'inoremap <buffer><expr><silent> '.close.
+            \' <SID>SkipClose("'.escape(open, '"').'", "'.escape(close, '"').'")'
+    else
+      execute 'inoremap <buffer><expr><silent> '.open.' <SID>ManageQuote("'.escape(open, '"').'")'
+    endif
+  endfor
+  inoremap <buffer><expr> <BS> <SID>AutoDelete()
+  inoremap <buffer><expr> <CR> <SID>AutoBreak()
+endfunction
 
 function s:ManageQuote(quote)
   if s:IsString(line("."), col("."))
@@ -82,7 +105,7 @@ endfunction
 
 " auto break {{{
 function s:AutoBreak()
-  for [open, close] in g:coBraPairs
+  for [open, close] in b:pairs
     if open != close && getline(line("."))[col(".") - 2] == open
       let [line, col] = searchpairpos(escape(open, '['),
             \ '',
@@ -157,7 +180,7 @@ endfunction
 
 " auto delete {{{
 function s:AutoDelete()
-  for [open, close] in g:coBraPairs
+  for [open, close] in b:pairs
     if open == close
       let result = s:DeleteQuotes(open)
       if !empty(result)
@@ -294,7 +317,7 @@ function s:IsBeforeOrInsideWord()
     return v:false
   endif
   let pattern = '\s'
-  for [open, close] in g:coBraPairs
+  for [open, close] in b:pairs
     if open != close
       let pattern = pattern.'\|'.escape(close, ']')
     endif
