@@ -61,7 +61,13 @@ let g:coBraLineMax = 20
 ```
 * smart auto skip close
 ```
-[|] -> []|
+[|] -> [ ]|
+```
+* smart auto break
+```
+[|] -> [
+         |
+       ]
 ```
 * mutli line support
 ```
@@ -70,14 +76,6 @@ let g:coBraLineMax = 20
 ]
 [      [
  |] ->   ]|
-```
-
-#### soon
-
-```
-[|] -> [
-         |
-       ]
 ```
 
 #### license

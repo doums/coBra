@@ -34,14 +34,15 @@ let s:recursiveCount = 0
 
 for [open, close] in g:coBraPairs
   if open != close
-    execute 'inoremap <expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
-    execute 'inoremap <expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
+    execute 'inoremap <unique><expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
+    execute 'inoremap <unique><expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
   else
-    execute 'inoremap <expr><silent> ' . open . ' <SID>ManageQuote("' . escape(open, '"') . '")'
+    execute 'inoremap <unique><expr><silent> ' . open . ' <SID>ManageQuote("' . escape(open, '"') . '")'
   endif
 endfor
 
-inoremap <expr> <BS> <SID>AutoDelete()
+inoremap <unique><expr> <BS> <SID>AutoDelete()
+inoremap <unique><expr> <CR> <SID>AutoBreak()
 
 function s:ManageQuote(quote)
   if s:IsString(line("."), col("."))
@@ -78,6 +79,26 @@ function s:SkipClose(open, close)
   endif
   return a:close
 endfunction
+
+" auto break {{{
+function s:AutoBreak()
+  for [open, close] in g:coBraPairs
+    if open != close && getline(line("."))[col(".") - 2] == open
+      let [line, col] = searchpairpos(escape(open, '['),
+            \ '',
+            \ escape(close, ']'),
+            \ 'cnW',
+            \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+            \ s:GetLineBoundary('f'))
+      if line == line(".") &&
+            \ match(getline("."), '^'.escape(open, '[').'\s*'.escape(close, ']'), col(".") - 2) > -1
+        return "\<CR>\<CR>\<Up>\<C-f>"
+      endif
+    endif
+  endfor
+  return "\<CR>"
+endfunction
+" }}}
 
 " pending close {{{
 function s:IsPendingClose(open, close)
