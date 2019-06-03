@@ -1,6 +1,6 @@
 " coBra
 "
-" for [c]oerced [b]racket
+" for [co]erced [bra]cket
 " author Pierre Dommerc
 " dommerc.pierre@gmail.com
 " MIT
