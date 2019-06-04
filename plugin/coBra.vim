@@ -336,7 +336,7 @@ function s:GetLineBoundary(direction)
 endfunction
 
 function s:Escape(str)
-  return escape(str, '[]')
+  return escape(a:str, '[]')
 endfunction
 
 function s:GetSHL(line, col)
