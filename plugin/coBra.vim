@@ -250,7 +250,7 @@ function s:IsPairEmpty(open, close, start, end)
   if a:start.line == a:end.line
     let [line, col] = searchpos(s:Escape(a:open).'\s*'.s:Escape(a:close), 'bW', a:start.line)
   else
-    let [line, col] = searchpos(s:Escape(a:open).'\(\s*\n\)\{'.(a:end.line - a:start.line).'}'.s:Escape(a:close), 'bW', a:start.line)
+    let [line, col] = searchpos(s:Escape(a:open).'\(\s*\n\)\{'.(a:end.line - a:start.line).'}\s*'.s:Escape(a:close), 'bW', a:start.line)
   endif
   if line == a:start.line && col == a:start.col - 1
     return v:true
