@@ -92,9 +92,9 @@ endfunction
 
 function s:SkipClose(open, close)
   if getline(".")[col(".") - 1] == a:close
-        \ && searchpair(escape(a:open, '['),
+        \ && searchpair(s:Escape(a:open),
         \ '',
-        \ escape(a:close, ']'),
+        \ s:Escape(a:close),
         \ 'cnW',
         \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
         \ s:GetLineBoundary('f')) > 0
@@ -107,14 +107,14 @@ endfunction
 function s:AutoBreak()
   for [open, close] in b:pairs
     if open != close && getline(line("."))[col(".") - 2] == open
-      let [line, col] = searchpairpos(escape(open, '['),
+      let [line, col] = searchpairpos(s:Escape(open),
             \ '',
-            \ escape(close, ']'),
+            \ s:Escape(close),
             \ 'cnW',
             \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
             \ s:GetLineBoundary('f'))
       if line == line(".") &&
-            \ match(getline("."), '^'.escape(open, '[').'\s*'.escape(close, ']'), col(".") - 2) > -1
+            \ match(getline("."), '^'.s:Escape(open).'\s*'.s:Escape(close), col(".") - 2) > -1
         return "\<CR>\<CR>\<Up>\<C-f>"
       endif
     endif
@@ -141,9 +141,9 @@ endfunction
 
 function s:UnderCursorSearch(open, close, stopLine)
   if getline(".")[col(".") - 1] == a:close
-    let [line, col] = searchpairpos(escape(a:open, '['),
+    let [line, col] = searchpairpos(s:Escape(a:open),
           \ '',
-          \ escape(a:close, ']'),
+          \ s:Escape(a:close),
           \ 'bWn',
           \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
           \ a:stopLine)
@@ -158,16 +158,16 @@ function s:RecursiveSearch(open, close, maxForward, maxBackward)
     return
   endif
   let s:recursiveCount = s:recursiveCount + 1
-  let [line, col] = searchpos(escape(a:close, ']'), 'eWz', a:maxForward)
+  let [line, col] = searchpos(s:Escape(a:close), 'eWz', a:maxForward)
   if line == 0 && col == 0
     return
   endif
   if s:IsString(line, col) || s:IsComment(line, col)
     return s:RecursiveSearch(a:open, a:close, a:maxForward, a:maxBackward)
   endif
-  let [pairLine, pairCol] = searchpairpos(escape(a:open, '['),
+  let [pairLine, pairCol] = searchpairpos(s:Escape(a:open),
         \ '',
-        \ escape(a:close, ']'),
+        \ s:Escape(a:close),
         \ 'bnW',
         \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
         \ a:maxBackward)
@@ -199,9 +199,9 @@ endfunction
 function s:DeletePair(open, close)
   if getline(".")[col(".") - 2] == a:open
         \ && getline(".")[col(".") - 3] != '\'
-    let [line, col] = searchpairpos(escape(a:open, '['),
+    let [line, col] = searchpairpos(s:Escape(a:open),
           \ '',
-          \ escape(a:close, ']'),
+          \ s:Escape(a:close),
           \ 'cnW',
           \ '',
           \ s:GetLineBoundary('f'))
@@ -248,9 +248,9 @@ endfunction
 
 function s:IsPairEmpty(open, close, start, end)
   if a:start.line == a:end.line
-    let [line, col] = searchpos(escape(a:open, '[').'\s*'.escape(a:close, ']'), 'bW', a:start.line)
+    let [line, col] = searchpos(s:Escape(a:open).'\s*'.s:Escape(a:close), 'bW', a:start.line)
   else
-    let [line, col] = searchpos(escape(a:open, '[').'\(\s*\n\)\{'.(a:end.line - a:start.line).'}'.escape(a:close, ']'), 'bW', a:start.line)
+    let [line, col] = searchpos(s:Escape(a:open).'\(\s*\n\)\{'.(a:end.line - a:start.line).'}'.s:Escape(a:close), 'bW', a:start.line)
   endif
   if line == a:start.line && col == a:start.col - 1
     return v:true
@@ -300,7 +300,7 @@ function s:IsBeforeOrInsideWord()
   let pattern = '\s'
   for [open, close] in b:pairs
     if open != close
-      let pattern = pattern.'\|'.escape(close, ']')
+      let pattern = pattern.'\|'.s:Escape(close)
     endif
   endfor
   if getline(".")[col(".") - 1] =~ pattern.'\|[,;]'
@@ -333,6 +333,10 @@ function s:GetLineBoundary(direction)
       return boundary
     endif
   endif
+endfunction
+
+function s:Escape(str)
+  return escape(str, '[]')
 endfunction
 
 function s:GetSHL(line, col)
