@@ -213,7 +213,7 @@ function s:DeletePair(open, close)
     if start.line == end.line && end.col == start.col
       return "\<Del>\<BS>"
     endif
-    if s:InBetweenValid(a:close, start, end)
+    if s:IsPairEmpty(a:open, a:close, start, end)
       if start.line == end.line
         let toEnd = end.col - 2
         let toStart = ''
@@ -246,32 +246,13 @@ function s:DeletePair(open, close)
   endif
 endfunction
 
-function s:InBetweenValid(close, start, end)
+function s:IsPairEmpty(open, close, start, end)
   if a:start.line == a:end.line
-    return s:OneLineCheck(a:close, a:start, a:end)
-  endif
-  if match(getline(a:start.line), '^\s*$', a:start.col - 1) == -1
-    return v:false
-  endif
-  if a:start.line + 1 < a:end.line
-    for row in getline(a:start.line + 1, a:end.line - 1)
-      if match(row, '^\s*$') == -1
-        return v:false
-      endif
-    endfor
-  endif
-  let lastLine = strpart(getline(a:end.line), 0, a:end.col)
-  if match(lastLine, '^\s*'.escape(a:close, ']').'$') == -1
-    return v:false
-  endif
-  return v:true
-endfunction
-
-function s:OneLineCheck(close, start, end)
-  let line = strpart(getline(a:start.line), 0, a:end.col)
-  if match(line, '^\s*'.escape(a:close, ']').'$', a:start.col - 1) == -1
-    return v:false
+    let [line, col] = searchpos(escape(a:open, '[').'\s*'.escape(a:close, ']'), 'bW', a:start.line)
   else
+    let [line, col] = searchpos(escape(a:open, '[').'\(\s*\n\)\{'.(a:end.line - a:start.line).'}'.escape(a:close, ']'), 'bW', a:start.line)
+  endif
+  if line == a:start.line && col == a:start.col - 1
     return v:true
   endif
 endfunction
