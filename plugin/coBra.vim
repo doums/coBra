@@ -140,7 +140,7 @@ function s:IsPendingClose(open, close)
 endfunction
 
 function s:UnderCursorSearch(open, close, stopLine)
-  if getline(".")[col(".") - 1] == a:close
+  if getline(".")[col(".") - 1] == a:close && !s:IsArrowOrGreaterLessSign(a:close, line("."), col(".") - 1)
     let [line, col] = searchpairpos(s:Escape(a:open),
           \ '',
           \ s:Escape(a:close),
@@ -162,14 +162,16 @@ function s:RecursiveSearch(open, close, maxForward, maxBackward)
   if line == 0 && col == 0
     return
   endif
-  if s:IsString(line, col) || s:IsComment(line, col)
+  if s:IsString(line, col) ||
+        \ s:IsComment(line, col) ||
+        \ s:IsArrowOrGreaterLessSign(a:close, line, col - 1)
     return s:RecursiveSearch(a:open, a:close, a:maxForward, a:maxBackward)
   endif
   let [pairLine, pairCol] = searchpairpos(s:Escape(a:open),
         \ '',
         \ s:Escape(a:close),
         \ 'bnW',
-        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col(".")) || s:IsArrowOrGreaterLessSign(a:open, line("."), col(".") - 1)',
         \ a:maxBackward)
   if pairLine == 0 && pairCol == 0
     return v:true
@@ -307,6 +309,20 @@ function s:IsBeforeOrInsideWord()
     return v:false
   endif
   return v:true
+endfunction
+
+function s:IsArrowOrGreaterLessSign(c, lnum, index)
+  if a:c != '<' && a:c != '>'
+    return
+  endif
+  let line = getline(a:lnum)
+  if strpart(line, a:index - 1, 2)  =~ '^[-=]>$'
+    return v:true
+  elseif strpart(line, a:index, 2)  =~ '^[<>]=$'
+    return v:true
+  elseif match(line, '^\s\=[<>]\s\=\(-\=\d\|\w\)', a:index - 1) > -1
+    return v:true
+  endif
 endfunction
 
 function s:GetLineBoundary(direction)
