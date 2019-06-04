@@ -23,7 +23,7 @@ You can customize the pairs. If the open character is the same as the close
 character the pair is considered as quotes (different behavior on some
 situation compared to real brackets). You have to enter a set of pairs by
 file type. Of course you can customize the default set too.
-One restriction, a pair is comosed of two characters max.
+Only one restriction, a pair is composed of two characters max.
 >
   let g:coBraPairs = {
     \  'default': [
