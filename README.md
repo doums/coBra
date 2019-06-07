@@ -59,27 +59,27 @@ let g:coBraLineMax = 20
 
 #### features
 
-* smart auto close
+* auto close
 ```
 | -> [|]
 | ] -> [| ]
 ```
-* smart auto delete
+* auto delete
 ```
 [|] -> |
 [|  ] -> |
 ```
-* smart auto skip close
+* auto skip
 ```
 [|] -> [ ]|
 ```
-* smart auto break
+* auto break
 ```
 [|] -> [
          |
        ]
 ```
-* mutli line support
+* mutli lines support
 ```
 [|     |
    ->
