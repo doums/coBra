@@ -326,6 +326,13 @@ function s:IsArrowOrGreaterLessSign(c, lnum, index)
 endfunction
 
 function s:GetLineBoundary(direction)
+  if exists("g:coBraFullBuffer")
+    if a:direction == 'f'
+      return line("$")
+    else
+      return 1
+    endif
+  endif
   if !exists("g:coBraLineMax") || g:coBraLineMax <= 0
     if a:direction == 'f'
       return line("w$")

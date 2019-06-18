@@ -50,10 +50,19 @@ close bracket that does not have a matching open one. If it find one the
 script simply inserts the open bracket without auto closing it to complete the
 pair. |g:coBraMaxPendingCloseTry| limits the number of try of this logic.
 
+                                                           *g:coBraFullBuffer*
+
+By default, and for the sake of performance, coBra takes into account only the
+visible lines from the current window. With this option you can configure
+coBra to run on the entire file.
+>
+  let g:coBraFullBuffer
+<
+
                                                               *g:coBraLineMax*
 
-You can set the range of lines on which the script is effective to preform
-its logic (starting from the cursor position). Default is all the lines
-displayed in the current window.
-
-
+Like |g:coBraFullBuffer| but instead of the whole file, you can set a range
+of lines (starting from the cursor position, forward and backward).
+>
+  let g:coBraLineMax = 10
+<

@@ -52,9 +52,14 @@ Preformance is king when we type. For that reason you can set `g:coBraMaxPending
 let g:coBraMaxPendingCloseTry = 10
 ```
 
-You can set the range of lines on which the script is effective to preform its logic (starting from the cursor position). Default is all the lines displayed in the current window.
+By default, and for the sake of performance, coBra takes into account only the visible lines from the current window. With this option you can configure coBra to run on the entire file.
 ```
-let g:coBraLineMax = 20
+let g:coBraFullBuffer
+```
+
+Like `g:coBraFullBuffer` but instead of the whole file, you can set a range of lines (starting from the cursor position, forward and backward).
+```
+let g:coBraLineMax = 10
 ```
 
 #### features
