@@ -25,7 +25,7 @@ coBra runs in insert mode only, default pairs are ```"'`{([```
 
 coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for "detection:ON"). This way coBra will use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he will use the default one.
 
-coBra will map for insert mode only `<BS>`, `<CR>` and each opener character from the pairs. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
+coBra will map for insert mode only `<BS>`, `<CR>` and the two characters of each pair. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
 
 All settings are optional.
 
