@@ -94,4 +94,4 @@ let g:coBraLineMax = 10
 ```
 
 #### license
-MIT
+Mozilla Public License 2.0

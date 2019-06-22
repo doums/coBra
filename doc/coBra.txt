@@ -66,3 +66,11 @@ of lines (starting from the cursor position, forward and backward).
 >
   let g:coBraLineMax = 10
 <
+
+==============================================================================
+
+LICENSE
+
+Mozilla Public License 2.0
+https://mozilla.org/MPL/2.0/
+
