@@ -68,7 +68,6 @@ of lines (starting from the cursor position, forward and backward).
 <
 
 ==============================================================================
-
 LICENSE
 
 Mozilla Public License 2.0
