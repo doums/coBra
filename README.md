@@ -8,7 +8,7 @@ A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to b
 
 Follow the traditional way of your plugin manager.
 
-For Example with [vim-plug](https://github.com/junegunn/vim-plug) add this in `.vimrc`
+For example with [vim-plug](https://github.com/junegunn/vim-plug) add this in `.vimrc`
 ```
 Plug 'doums/coBra'
 ```
