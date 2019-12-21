@@ -48,13 +48,13 @@ augroup END
 function s:Init()
   for type in keys(g:coBraPairs)
     if type == &filetype
-      return s:setPairsAndMap(type)
+      return s:SetPairsAndMap(type)
     endif
   endfor
-  return s:setPairsAndMap('default')
+  return s:SetPairsAndMap('default')
 endfunction
 
-function s:setPairsAndMap(type)
+function s:SetPairsAndMap(type)
   let b:pairs = g:coBraPairs[a:type]
   for [open, close] in b:pairs
     if open != close
