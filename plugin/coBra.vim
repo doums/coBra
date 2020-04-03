@@ -26,7 +26,6 @@ let g:defaultPairs = [
       \  ['(', ')'],
       \  ['[', ']']
       \ ]
-let b:pairs = g:defaultPairs
 
 if !exists('g:coBraPairs')
   let g:coBraPairs = { 'default': g:defaultPairs }
@@ -34,7 +33,7 @@ elseif !has_key(g:coBraPairs, 'default')
   let g:coBraPairs.default = g:defaultPairs
 endif
 
-if !exists("g:coBraMaxPendingCloseTry")
+if !exists('g:coBraMaxPendingCloseTry')
   let g:coBraMaxPendingCloseTry = 10
 endif
 
@@ -42,19 +41,31 @@ let s:recursiveCount = 0
 
 augroup coBra
   autocmd!
-  autocmd FileType * call s:Init()
+  autocmd BufEnter * call s:Init()
+  autocmd FileType * call s:Init(expand("<amatch>"))
 augroup END
 
-function s:Init()
-  for type in keys(g:coBraPairs)
-    if type == &filetype
-      return s:SetPairsAndMap(type)
-    endif
-  endfor
-  return s:SetPairsAndMap('default')
+function s:Init(...)
+  if a:0 == 1
+    for type in keys(g:coBraPairs)
+      if type == a:1
+        return s:SetPairsAndMap(type)
+      endif
+    endfor
+  else
+    for type in keys(g:coBraPairs)
+      if type == &filetype
+        return s:SetPairsAndMap(type)
+      endif
+    endfor
+  endif
+  call s:SetPairsAndMap('default')
 endfunction
 
 function s:SetPairsAndMap(type)
+  if exists("b:pairs") && b:pairs is g:coBraPairs[a:type]
+    return
+  endif
   let b:pairs = g:coBraPairs[a:type]
   for [open, close] in b:pairs
     if open != close
