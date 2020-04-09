@@ -68,7 +68,7 @@ let g:coBraLineMax = 10
 caption:\
 `|` = cursor or bounds of the selection in visual mode\
 `*` = a random character\
-`,` = `<Leader>`
+`,` = `<Leader>`\
 `n` = end of line
 
 | | mode | before | pressed key | after
