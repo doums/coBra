@@ -43,7 +43,7 @@ skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
 
 coBra runs in insert and visual modes only, default pairs are ```"'`{([```.
 
-coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for `detection:ON`). This way coBra use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not, he falls back to the default setting.
+coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for `detection:ON`). This way coBra uses the corresponding set of pairs if available (defined with `g:coBraPairs`). If not, he falls back to the default setting.
 
 coBra maps for insert mode `<BS>`, `<CR>` and the two characters of each pair.\
 For visual mode one map for each opener characters prefixed by `<Leader>` is created.\
