@@ -132,7 +132,7 @@ function s:WrapBy(selection, open, close)
   endif
   let goToEnd = a:selection.end.pos[0]."G".(a:selection.end.pos[1] + endOffset)."|"
   let a:selection.start.pos[1] += 1
-  let a:selection.end.pos[1] -= (1 + endOffset)
+  let a:selection.end.pos[1] += endOffset
   return "\<Esc>".goToStart."i".a:open."\<Esc>".goToEnd."a".a:close."\<Esc>".s:Select(a:selection)
 endfunction
 
