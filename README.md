@@ -1,27 +1,28 @@
 ## coBra
 
-###### :snake: for [co]erced [bra]cket :snake:
+:snake: for [co]erced [bra]cket
 
 A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to be smart.
 
-#### install
+### install
 
-Follow the traditional way of your plugin manager.
+If you use a plugin manager, follow the traditional way.
 
-For example with [vim-plug](https://github.com/junegunn/vim-plug) add this in `.vimrc`
+For example with [vim-plug](https://github.com/junegunn/vim-plug) add this in `.vimrc`:
 ```
 Plug 'doums/coBra'
 ```
 
-then run in vim
+Then run in vim:
 ```
 :source $MYVIMRC
 :PlugInstall
 ```
+If you use vim package `:h packages`.
 
-#### settings
+### settings
 
-coBra runs in insert mode only, default pairs are ```"'`{([```
+coBra runs in insert mode only, default pairs are ```"'`{([```.
 
 coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for "detection:ON"). This way coBra will use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he will use the default one.
 
@@ -62,36 +63,25 @@ Like `g:coBraFullBuffer` but instead of the whole file, you can set a range of l
 let g:coBraLineMax = 10
 ```
 
-#### features
+### features
 
-* auto close
-```
-| -> [|]
-| ] -> [| ]
-```
-* auto delete
-```
-[|] -> |
-[|  ] -> |
-```
-* auto skip
-```
-[|] -> [ ]|
-```
-* auto break
-```
-[|] -> [
-         |
-       ]
-```
-* mutli lines support
-```
-[|     |
-   ->
-]
-[      [
- |] ->   ]|
-```
+caption:\
+`|` = cursor or bounds of the selection in visual mode\
+`*` = a random character\
+`,` = `<Leader>`
+`n` = end of line
 
-#### license
+| | mode | before | pressed key | after
+--- | --- | --- | --- | ---
+close | insert | `\|` | `[` | `[\|]`
+delete | insert | `[\|]` | `<BS>` | `\|`
+skip | insert | `[\|]` | `]` | `[ ]\|`
+break | insert | `[\|]` | `<CR>` | `[n\|n]`
+wrap | visual | `\|****\|` | `,[` | `[\|****\|]`
+replace | visual | `\|[****]\|` | `,(` | `(\|****\|)`
+skip on quotes | visual | `\|"****"\|` | `,"` | `"\|****\|"`
+
+**note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
+
+### license
 Mozilla Public License 2.0
