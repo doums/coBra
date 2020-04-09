@@ -22,11 +22,13 @@ If you use vim package `:h packages`.
 
 ### settings
 
-coBra runs in insert mode only, default pairs are ```"'`{([```.
+coBra runs in insert and visual modes only, default pairs are ```"'`{([```.
 
 coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for "detection:ON"). This way coBra will use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he will use the default one.
 
-coBra will map for insert mode only `<BS>`, `<CR>` and the two characters of each pair. He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
+coBra maps for insert mode `<BS>`, `<CR>` and the two characters of each pair.\
+For visual mode one map for each opener characters prefixed by `<Leader>` is created.\
+He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
 
 All settings are optional.
 
