@@ -20,19 +20,38 @@ Then run in vim:
 ```
 If you use vim package `:h packages`.
 
+### features
+
+caption:\
+`|` = cursor or bounds of the selection in visual mode\
+`*` = a random character\
+`n` = end of line
+
+| | mode | before | pressed key | after
+--- | --- | --- | --- | ---
+close | insert | `\|` | `[` | `[\|]`
+delete | insert | `[\|]` | `<BS>` | `\|`
+skip | insert | `[\|]` | `]` | `[ ]\|`
+break | insert | `[\|]` | `<CR>` | `[n\|n]`
+wrap | visual | `\|****\|` | `<Leader>[` | `[\|****\|]`
+replace | visual | `\|[****]\|` | `<Leader>(` | `(\|****\|)`
+skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
+
+**note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
+
 ### settings
 
 coBra runs in insert and visual modes only, default pairs are ```"'`{([```.
 
-coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for "detection:ON"). This way coBra will use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he will use the default one.
+coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for `detection:ON`). This way coBra uses the corresponding set of pairs if available (defined with `g:coBraPairs`). If not, he falls back to the default setting.
 
 coBra maps for insert mode `<BS>`, `<CR>` and the two characters of each pair.\
 For visual mode one map for each opener characters prefixed by `<Leader>` is created.\
-He expects that no mapping for these keys already exists. If not the concerned mapping will fail.
+He expects that no mapping for these keys already exists. If not, the concerned mapping will fail.
 
 All settings are optional.
 
-To customize the pairs use `g:coBraPairs`, if the open character is the same as the close character the pair is considered as quotes (different behavior on some situation compared to real brackets).
+To customize the pairs use `g:coBraPairs`, if the open character is the same as the close character the pair is considered as quotes (different behavior on some situation compared to brackets).
 You have to enter a set of pairs by file type. Of course you can customize the default set too.
 ```
 let g:coBraPairs = {
@@ -64,25 +83,6 @@ Like `g:coBraFullBuffer` but instead of the whole file, you can set a range of l
 ```
 let g:coBraLineMax = 10
 ```
-
-### features
-
-caption:\
-`|` = cursor or bounds of the selection in visual mode\
-`*` = a random character\
-`n` = end of line
-
-| | mode | before | pressed key | after
---- | --- | --- | --- | ---
-close | insert | `\|` | `[` | `[\|]`
-delete | insert | `[\|]` | `<BS>` | `\|`
-skip | insert | `[\|]` | `]` | `[ ]\|`
-break | insert | `[\|]` | `<CR>` | `[n\|n]`
-wrap | visual | `\|****\|` | `<Leader>[` | `[\|****\|]`
-replace | visual | `\|[****]\|` | `<Leader>(` | `(\|****\|)`
-skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
-
-**note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
 
 ### license
 Mozilla Public License 2.0
