@@ -43,7 +43,7 @@ skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
 
 coBra runs in insert and visual modes only, default pairs are ```"'`{([```.
 
-coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for `detection:ON`). This way coBra will use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he will use the default one.
+coBra works by buffer and more precisely by file type. Be sure to have the `filetype` option on (you can check it with `:filetype`, and look for `detection:ON`). This way coBra use the corresponding set of pairs if available (defined with `g:coBraPairs`). If not he falls back to the default setting.
 
 coBra maps for insert mode `<BS>`, `<CR>` and the two characters of each pair.\
 For visual mode one map for each opener characters prefixed by `<Leader>` is created.\
@@ -51,7 +51,7 @@ He expects that no mapping for these keys already exists. If not the concerned m
 
 All settings are optional.
 
-To customize the pairs use `g:coBraPairs`, if the open character is the same as the close character the pair is considered as quotes (different behavior on some situation compared to real brackets).
+To customize the pairs use `g:coBraPairs`, if the open character is the same as the close character the pair is considered as quotes (different behavior on some situation compared to brackets).
 You have to enter a set of pairs by file type. Of course you can customize the default set too.
 ```
 let g:coBraPairs = {
