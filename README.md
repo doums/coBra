@@ -70,7 +70,6 @@ let g:coBraLineMax = 10
 caption:\
 `|` = cursor or bounds of the selection in visual mode\
 `*` = a random character\
-`,` = `<Leader>`\
 `n` = end of line
 
 | | mode | before | pressed key | after
@@ -79,9 +78,9 @@ close | insert | `\|` | `[` | `[\|]`
 delete | insert | `[\|]` | `<BS>` | `\|`
 skip | insert | `[\|]` | `]` | `[ ]\|`
 break | insert | `[\|]` | `<CR>` | `[n\|n]`
-wrap | visual | `\|****\|` | `,[` | `[\|****\|]`
-replace | visual | `\|[****]\|` | `,(` | `(\|****\|)`
-skip on quotes | visual | `\|"****"\|` | `,"` | `"\|****\|"`
+wrap | visual | `\|****\|` | `<Leader>[` | `[\|****\|]`
+replace | visual | `\|[****]\|` | `<Leader>(` | `(\|****\|)`
+skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
 
 **note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
 
