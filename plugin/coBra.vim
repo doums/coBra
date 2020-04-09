@@ -68,7 +68,7 @@ function s:SetPairsAndMap(type)
   endif
   let b:pairs = g:coBraPairs[a:type]
   for [open, close] in b:pairs
-    if open != close
+    if !s:AreQuotes(open, close)
       execute 'inoremap <buffer><expr><silent> '.open.
             \' <SID>AutoClose("'.escape(open, '"').'", "'.escape(close, '"').'")'
       execute 'inoremap <buffer><expr><silent> '.close.
@@ -76,11 +76,118 @@ function s:SetPairsAndMap(type)
     else
       execute 'inoremap <buffer><expr><silent> '.open.' <SID>ManageQuote("'.escape(open, '"').'")'
     endif
+    execute 'vnoremap <buffer><expr> <Leader>'.open.' <SID>VisualBracket("'
+          \ .escape(open, '"').'", "'.escape(close, '"').'")'
   endfor
   inoremap <buffer><expr> <BS> <SID>AutoDelete()
   inoremap <buffer><expr> <CR> <SID>AutoBreak()
 endfunction
 
+" {{{ visual
+function s:IsWrappedBy(selection)
+  for [open, close] in b:pairs
+    if a:selection.start.char ==# open
+          \ && a:selection.end.char ==# close
+      if s:AreQuotes(open, close)
+        return 1
+      else
+        return 2
+      endif
+    endif
+  endfor
+  return 0
+endfunction
+
+function s:GetCurrentSelection()
+  if mode() !=# "v"
+    return 0
+  endif
+  let start = getpos("v")
+  let end = getcurpos()
+  if start[1] > end[1] || (start[1] == end[1] && start[2] > end[2])
+    let tmp = start
+    let start = end
+    let end = tmp
+  endif
+  let startChar = getline(start[1])[start[2] - 1]
+  let endChar = getline(end[1])[end[2] - 1]
+  let cursorAtEnd = 1
+  let cursor = getcurpos()
+  if cursor[1] == start[1] && cursor[2] == start[2]
+    let cursorAtEnd = 0
+  endif
+  return {
+        \ "start": { "pos": [start[1], start[2]], "char": startChar },
+        \ "end": { "pos": [end[1], end[2]], "char": endChar },
+        \ "cursorAtEnd": cursorAtEnd
+        \ }
+endfunction
+
+function s:WrapBy(selection, open, close)
+  let cursor = getcurpos()
+  let goToStart = a:selection.start.pos[0]."G".a:selection.start.pos[1]."|"
+  let endOffset = 0
+  if a:selection.start.pos[0] == a:selection.end.pos[0]
+    let endOffset = 1
+  endif
+  let goToEnd = a:selection.end.pos[0]."G".(a:selection.end.pos[1] + endOffset)."|"
+  let a:selection.start.pos[1] += 1
+  let a:selection.end.pos[1] -= (1 + endOffset)
+  return "\<Esc>".goToStart."i".a:open."\<Esc>".goToEnd."a".a:close."\<Esc>".s:Select(a:selection)
+endfunction
+
+function s:ReplaceBy(selection, open, close)
+  let cursor = getcurpos()
+  let goToStart = a:selection.start.pos[0]."G".a:selection.start.pos[1]."|"
+  let goToEnd = a:selection.end.pos[0]."G".a:selection.end.pos[1]."|"
+  let a:selection.start.pos[1] += 1
+  let a:selection.end.pos[1] -= 1
+  return "\<Esc>".goToStart."s".a:open."\<Esc>".goToEnd."s".a:close."\<Esc>".s:Select(a:selection)
+endfunction
+
+function s:Select(selection)
+  let goToStart = a:selection.start.pos[0]."G".a:selection.start.pos[1]."|"
+  let goToEnd = a:selection.end.pos[0]."G".a:selection.end.pos[1]."|"
+  if a:selection.cursorAtEnd
+    return goToStart."v".goToEnd
+  else
+    return goToEnd."v".goToStart
+  endif
+endfunction
+
+function s:VisualBracket(open, close)
+  let selection = s:GetCurrentSelection()
+  if empty(selection) || (
+        \   selection.start.pos[0] == selection.end.pos[0]
+        \   && selection.start.pos[1] == selection.end.pos[1]
+        \ )
+    return ""
+  endif
+  let isWrapped = s:IsWrappedBy(selection)
+  if !isWrapped
+    return s:WrapBy(selection, a:open, a:close)
+  elseif isWrapped == 2
+        \ && selection.start.char ==# a:open && selection.end.char ==# a:close
+    return s:WrapBy(selection, a:open, a:close)
+  elseif isWrapped == 1
+        \ && selection.start.char ==# a:open && selection.end.char ==# a:close
+    let selection.start.pos[1] += 1
+    let selection.end.pos[1] -= 1
+    return "\<Esc>".s:Select(selection)
+  elseif isWrapped == 1 && s:AreQuotes(a:open, a:close)
+    return s:ReplaceBy(selection, a:open, a:close)
+  elseif isWrapped == 1 && !s:AreQuotes(a:open, a:close)
+    return s:WrapBy(selection, a:open, a:close)
+  elseif isWrapped == 2 && s:AreQuotes(a:open, a:close)
+    return s:WrapBy(selection, a:open, a:close)
+  elseif isWrapped == 2 && !s:AreQuotes(a:open, a:close)
+    return s:ReplaceBy(selection, a:open, a:close)
+  endif
+  return ""
+endfunction
+" }}}
+
+" manage quote {{{
 function s:ManageQuote(quote)
   if s:IsString(line("."), col("."))
         \ && s:IsString(line("."), col(".") - 1)
@@ -90,7 +197,9 @@ function s:ManageQuote(quote)
   endif
   return s:AutoClose(a:quote, a:quote)
 endfunction
+" }}}
 
+" {{{ auto close
 function s:AutoClose(open, close)
   if s:IsEscaped()
         \ || s:IsString(line("."), col("."))
@@ -116,6 +225,7 @@ function s:SkipClose(open, close)
   endif
   return a:close
 endfunction
+" }}}
 
 " auto break {{{
 function s:AutoBreak()
@@ -286,6 +396,13 @@ endfunction
 " }}}
 
 " helpers {{{
+function s:AreQuotes(open, close)
+  if a:open ==# a:close
+    return 1
+  endif
+  return 0
+endfunction
+
 function s:IsString(line, col)
   if s:GetSHL(a:line, a:col) =~? "string"
     return v:true
