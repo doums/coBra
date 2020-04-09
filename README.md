@@ -20,6 +20,25 @@ Then run in vim:
 ```
 If you use vim package `:h packages`.
 
+### features
+
+caption:\
+`|` = cursor or bounds of the selection in visual mode\
+`*` = a random character\
+`n` = end of line
+
+| | mode | before | pressed key | after
+--- | --- | --- | --- | ---
+close | insert | `\|` | `[` | `[\|]`
+delete | insert | `[\|]` | `<BS>` | `\|`
+skip | insert | `[\|]` | `]` | `[ ]\|`
+break | insert | `[\|]` | `<CR>` | `[n\|n]`
+wrap | visual | `\|****\|` | `<Leader>[` | `[\|****\|]`
+replace | visual | `\|[****]\|` | `<Leader>(` | `(\|****\|)`
+skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
+
+**note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
+
 ### settings
 
 coBra runs in insert and visual modes only, default pairs are ```"'`{([```.
@@ -64,25 +83,6 @@ Like `g:coBraFullBuffer` but instead of the whole file, you can set a range of l
 ```
 let g:coBraLineMax = 10
 ```
-
-### features
-
-caption:\
-`|` = cursor or bounds of the selection in visual mode\
-`*` = a random character\
-`n` = end of line
-
-| | mode | before | pressed key | after
---- | --- | --- | --- | ---
-close | insert | `\|` | `[` | `[\|]`
-delete | insert | `[\|]` | `<BS>` | `\|`
-skip | insert | `[\|]` | `]` | `[ ]\|`
-break | insert | `[\|]` | `<CR>` | `[n\|n]`
-wrap | visual | `\|****\|` | `<Leader>[` | `[\|****\|]`
-replace | visual | `\|[****]\|` | `<Leader>(` | `(\|****\|)`
-skip on quotes | visual | `\|"****"\|` | `<Leader>"` | `"\|****\|"`
-
-**note:** All maps works on multi lines. The presence of characters between the brackets or the quotes does not prevent maps from working.
 
 ### license
 Mozilla Public License 2.0
