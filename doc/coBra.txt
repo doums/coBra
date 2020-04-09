@@ -1,4 +1,4 @@
-*coBra.txt*   Plugin that forces brackets and quotes to be smart
+*coBra.txt*  Plugin that forces brackets and quotes to be smart
 
 [co]erced [bra]cket
 
@@ -7,24 +7,55 @@ coBra runs in insert and visual modes only, default pairs are "'`{([.
 coBra works by buffer and more precisely by file type. Be sure to have the
 |filetype| option on (you can check it with `:filetype`, and look for
 "detection:ON"). This way coBra uses the corresponding set of pairs if
-available (defined with |g:coBraPairs|). If not, he falls back to the default setting.
+available (defined with |g:coBraPairs|). If not, he falls back to the default
+setting.
 
 coBra maps for insert mode <BS>, <CR> and the two characters of each
-pair.
-For visual mode one map for each opener characters prefixed by <Leader> is
-created. He expects that no mapping for these keys already exists.
-If not, the concerned mapping will fail.
-
-All settings are optional.
+pair. For visual mode one map for each opener characters prefixed by <Leader>
+is created. He expects that no mapping for these keys already exists. If not,
+the concerned mapping will fail.
 
 ==============================================================================
+FEATURE                                                        *coBra-feature*
+
+>
+    |---------|--------|------------|-------------|------------|
+    |         | mode   | before     | map         | after      |
+    |---------|--------|------------|-------------|------------|
+    | close   | insert | |          | [           | [|]        |
+    |---------|--------|------------|-------------|------------|
+    | delete  | insert | [|]        | <BS>        | |          |
+    |---------|--------|------------|-------------|------------|
+    | skip    | insert | [|]        | ]           | [ ]|       |
+    |---------|--------|------------|-------------|------------|
+    | break   | insert | [|]        | <CR>        | [n|n]      |
+    |---------|--------|------------|-------------|------------|
+    | wrap    | visual | |****|     | <Leader>[   | [|****|]   |
+    |---------|--------|------------|-------------|------------|
+    | replace | visual | |[****]|   | <Leader>(   | (|****|)   |
+    |---------|--------|------------|-------------|------------|
+    | skip    | visual | |"****"|   | <Leader>"   | "|****|"   |
+    |---------|--------|------------|-------------|------------|
+<
+caption:
+`|` cursor or bounds of the selection in visual mode
+`*` a random character
+`n` end of line
+
+NOTE: All maps works on multi lines. The presence of characters between the
+brackets or the quotes does not prevent maps from working.
+
+==============================================================================
+SETTING                                                        *coBra-setting*
+
+All settings are optional.
 
                                                                 *g:coBraPairs*
 
 You can customize the pairs. If the open character is the same as the close
 character the pair is considered as quotes (different behavior on some
-situation compared to brackets). You have to enter a set of pairs by
-file type. Of course you can customize the default set too.
+situation compared to brackets). You have to enter a set of pairs by file
+type. Of course you can customize the default set too.
 Only one restriction, a pair is composed of two characters max.
 >
   let g:coBraPairs = {

@@ -27,7 +27,7 @@ caption:\
 `*` = a random character\
 `n` = end of line
 
-| | mode | before | pressed key | after
+| | mode | before | map | after
 --- | --- | --- | --- | ---
 close | insert | `\|` | `[` | `[\|]`
 delete | insert | `[\|]` | `<BS>` | `\|`
