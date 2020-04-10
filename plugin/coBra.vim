@@ -218,9 +218,9 @@ function s:SkipClose(open, close)
         \ && searchpair(s:Escape(a:open),
         \ '',
         \ s:Escape(a:close),
-        \ 'cnW',
+        \ 'bnW',
         \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
-        \ s:GetLineBoundary('f')) > 0
+        \ s:GetLineBoundary('b')) > 0
     return "\<Right>"
   endif
   return a:close
