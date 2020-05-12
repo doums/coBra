@@ -79,8 +79,8 @@ function s:SetPairsAndMap(type)
     execute 'vnoremap <buffer><expr> <Leader>'.open.' <SID>VisualBracket("'
           \ .escape(open, '"').'", "'.escape(close, '"').'")'
   endfor
-  inoremap <buffer><expr> <BS> <SID>AutoDelete()
-  inoremap <buffer><expr> <CR> <SID>AutoBreak()
+  imap <buffer><expr> <BS> <SID>AutoDelete()
+  imap <buffer><expr> <CR> <SID>AutoBreak()
 endfunction
 
 " {{{ visual
@@ -229,6 +229,9 @@ endfunction
 
 " auto break {{{
 function s:AutoBreak()
+  if pumvisible()
+    return "\<CR>"
+  endif
   for [open, close] in b:pairs
     if open != close && getline(line("."))[col(".") - 2] == open
       let [line, col] = searchpairpos(s:Escape(open),
