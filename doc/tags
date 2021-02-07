@@ -1,0 +1,9 @@
+coBra	coBra.txt	/*coBra*
+coBra-feature	coBra.txt	/*coBra-feature*
+coBra-license	coBra.txt	/*coBra-license*
+coBra-setting	coBra.txt	/*coBra-setting*
+coBra.txt	coBra.txt	/*coBra.txt*
+g:coBraFullBuffer	coBra.txt	/*g:coBraFullBuffer*
+g:coBraLineMax	coBra.txt	/*g:coBraLineMax*
+g:coBraMaxPendingCloseTry	coBra.txt	/*g:coBraMaxPendingCloseTry*
+g:coBraPairs	coBra.txt	/*g:coBraPairs*
