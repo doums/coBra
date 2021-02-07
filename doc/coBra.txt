@@ -43,7 +43,7 @@ caption:
 `*` a random character
 `n` end of line
 
-NOTE: All maps works on multi lines. The presence of characters between the
+Note: All maps works on multi lines. The presence of characters between the
 brackets or the quotes does not prevent maps from working.
 
 ==============================================================================
