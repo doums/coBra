@@ -10,13 +10,13 @@
 
 " script {{{
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 if exists("g:coBra")
   finish
 endif
 let g:coBra = 1
+
+let s:save_cpo = &cpo
+set cpo&vim
 
 let g:defaultPairs = [
       \  ['"', '"'],
