@@ -80,7 +80,9 @@ function s:SetPairsAndMap(type)
           \ .escape(open, '"').'", "'.escape(close, '"').'")'
   endfor
   imap <buffer><expr> <BS> <SID>AutoDelete()
-  imap <buffer><expr> <CR> <SID>AutoBreak()
+  if len(mapcheck('<cr>', 'i')) == 0
+    imap <expr> <CR> <SID>AutoBreak()
+  endif
 endfunction
 
 " {{{ visual
