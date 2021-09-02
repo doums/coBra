@@ -80,7 +80,7 @@ function s:SetPairsAndMap(type)
           \ .escape(open, '"').'", "'.escape(close, '"').'")'
   endfor
   imap <buffer><expr> <BS> <SID>AutoDelete()
-  if len(mapcheck('<cr>', 'i')) == 0
+  if len(mapcheck('<cr>', 'i')) == 0 && !exists('g:coBraDisableCRMap')
     imap <expr> <CR> <SID>AutoBreak()
   endif
 endfunction

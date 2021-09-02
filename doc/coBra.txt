@@ -101,6 +101,14 @@ of lines (starting from the cursor position, forward and backward).
   let g:coBraLineMax = 10
 <
 
+                                                         *g:coBraDisableCRMap*
+
+Do not map <CR> for insert mode. You can use this if you get
+conflicts on that key.
+>
+  let g:coBraDisableCRMap = v:true
+<
+
 ==============================================================================
 LICENSE                                                        *coBra-license*
 
