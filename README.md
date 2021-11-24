@@ -4,6 +4,11 @@
 
 A simple [vim](https://www.vim.org/) plugin that forces brackets and quotes to be smart.
 
+## Status update
+
+Hi, I will no longer continue to maintain this plugin as I moved to [nvim](https://neovim.io/) plus now I write my plugins in Lua.
+(Actually, I had planned to rewrite it completely in lua and using Treesitter requests, we'll see.)
+
 ### install
 
 If you use a plugin manager, follow the traditional way.
